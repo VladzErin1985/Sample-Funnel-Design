@@ -147,10 +147,10 @@ nav {
 }
 .hero-phone-img {
   display: block; width: 100%; height: auto;
-  -webkit-mask-image: radial-gradient(ellipse 72% 68% at 50% 50%,
-    black 20%, rgba(0,0,0,.9) 38%, rgba(0,0,0,.4) 55%, transparent 70%);
-  mask-image: radial-gradient(ellipse 72% 68% at 50% 50%,
-    black 20%, rgba(0,0,0,.9) 38%, rgba(0,0,0,.4) 55%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 82% 80% at 50% 50%,
+    black 55%, rgba(0,0,0,.85) 70%, rgba(0,0,0,.3) 82%, transparent 90%);
+  mask-image: radial-gradient(ellipse 82% 80% at 50% 50%,
+    black 55%, rgba(0,0,0,.85) 70%, rgba(0,0,0,.3) 82%, transparent 90%);
   filter: drop-shadow(0 30px 70px rgba(14,8,24,.9)) drop-shadow(0 0 50px rgba(30,107,255,.1));
 }
 @keyframes float {
@@ -240,10 +240,10 @@ nav {
 }
 .feat-phone-img {
   display:block; width:100%; max-width:440px; height:auto;
-  -webkit-mask-image: radial-gradient(ellipse 68% 72% at 52% 44%,
-    black 22%, rgba(0,0,0,.85) 40%, rgba(0,0,0,.3) 58%, transparent 72%);
-  mask-image: radial-gradient(ellipse 68% 72% at 52% 44%,
-    black 22%, rgba(0,0,0,.85) 40%, rgba(0,0,0,.3) 58%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 84% 86% at 52% 44%,
+    black 55%, rgba(0,0,0,.85) 70%, rgba(0,0,0,.3) 82%, transparent 90%);
+  mask-image: radial-gradient(ellipse 84% 86% at 52% 44%,
+    black 55%, rgba(0,0,0,.85) 70%, rgba(0,0,0,.3) 82%, transparent 90%);
   filter: drop-shadow(0 30px 60px rgba(14,8,24,.9));
 }
 
@@ -254,9 +254,10 @@ nav {
 }
 .colors-inner {
   max-width: 1100px; margin:0 auto; padding: 0 48px;
-  display: grid; grid-template-columns: 280px 1fr;
+  display: grid; grid-template-columns: 1fr 320px;
   gap: 60px; align-items: center;
 }
+.colors-right { order: -1; }
 .colors-label {
   font-size: 11px; font-weight: 300; letter-spacing: .4em;
   text-transform: uppercase; color: var(--cobalt2); margin-bottom: 20px;
@@ -281,11 +282,13 @@ nav {
   position: relative;
 }
 .colors-showcase-img {
-  display:block; width:100%; height:320px;
+  display:block; width:100%; height:360px;
   object-fit: cover; object-position: center 30%;
-  -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, black 25%, rgba(0,0,0,.7) 45%, rgba(0,0,0,.15) 62%, transparent 75%);
-  mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, black 25%, rgba(0,0,0,.7) 45%, rgba(0,0,0,.15) 62%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, rgba(0,0,0,.8) 70%, rgba(0,0,0,.25) 82%, transparent 92%);
+  mask-image: radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, rgba(0,0,0,.8) 70%, rgba(0,0,0,.25) 82%, transparent 92%);
+  transition: filter .5s ease, opacity .3s ease;
 }
+.colors-showcase-img.switching { opacity: 0; }
 
 /* ── S PEN ── */
 #spen {
@@ -301,10 +304,10 @@ nav {
 .spen-img-wrap { display:flex; justify-content:center; }
 .spen-img {
   display:block; width:100%; max-width:360px; height:auto;
-  -webkit-mask-image: radial-gradient(ellipse 65% 65% at 55% 38%,
-    black 20%, rgba(0,0,0,.85) 38%, rgba(0,0,0,.3) 56%, transparent 70%);
-  mask-image: radial-gradient(ellipse 65% 65% at 55% 38%,
-    black 20%, rgba(0,0,0,.85) 38%, rgba(0,0,0,.3) 56%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 82% 82% at 55% 42%,
+    black 55%, rgba(0,0,0,.85) 70%, rgba(0,0,0,.3) 82%, transparent 90%);
+  mask-image: radial-gradient(ellipse 82% 82% at 55% 42%,
+    black 55%, rgba(0,0,0,.85) 70%, rgba(0,0,0,.3) 82%, transparent 90%);
   filter: drop-shadow(0 20px 50px rgba(14,8,24,.8));
 }
 .spen-eyebrow {
@@ -485,8 +488,8 @@ footer {
     <div class="hero-phone-wrap">
       <img
         class="hero-phone-img"
-        src="./phone-lineup.jpeg"
-        alt="Galaxy S26 Ultra — full lineup"
+        src="./1772714635529-087o9heccdz7.jpeg"
+        alt="Galaxy S26 Ultra"
         draggable="false"
       >
       <!-- lens hotspots -->
@@ -581,20 +584,29 @@ footer {
   <div class="colors-inner">
     <div class="colors-left">
       <p class="colors-label">Choose Your Finish</p>
+      <p id="color-name" style="font-size:22px;font-weight:600;color:var(--white);margin:10px 0 28px;letter-spacing:.04em;">Violet Black</p>
       <div class="color-swatches">
-        <div class="swatch active">
+        <div class="swatch active"
+          data-filter="none"
+          data-colorname="Violet Black">
           <div class="swatch-dot" style="background:radial-gradient(circle at 35% 35%,#2a1a4a,#0a0614);"></div>
           <span class="swatch-name">Violet</span>
         </div>
-        <div class="swatch">
+        <div class="swatch"
+          data-filter="grayscale(1) brightness(0.65) contrast(1.1)"
+          data-colorname="Phantom Black">
           <div class="swatch-dot" style="background:radial-gradient(circle at 35% 35%,#1a1a2a,#06060e);"></div>
           <span class="swatch-name">Black</span>
         </div>
-        <div class="swatch">
+        <div class="swatch"
+          data-filter="sepia(0.75) saturate(2.2) brightness(1.1) hue-rotate(-18deg)"
+          data-colorname="Titanium Gold">
           <div class="swatch-dot" style="background:radial-gradient(circle at 35% 35%,#d4a84b,#8a6520);"></div>
           <span class="swatch-name">Gold</span>
         </div>
-        <div class="swatch">
+        <div class="swatch"
+          data-filter="grayscale(0.5) brightness(1.3) saturate(0.4) contrast(1.05)"
+          data-colorname="Titanium Silver">
           <div class="swatch-dot" style="background:radial-gradient(circle at 35% 35%,#c8d8e8,#7a8a98);"></div>
           <span class="swatch-name">Silver</span>
         </div>
@@ -602,9 +614,10 @@ footer {
     </div>
     <div class="colors-right">
       <img
+        id="colors-img"
         class="colors-showcase-img"
-        src="./1772714635529-087o9heccdz7.jpeg"
-        alt="Galaxy S26 Ultra Violet"
+        src="./phone-lineup.jpeg"
+        alt="Galaxy S26 Ultra Lineup"
       >
     </div>
   </div>
@@ -746,10 +759,20 @@ const fo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.targe
 document.querySelectorAll('.feat-item').forEach(el=>fo.observe(el));
 
 // ── swatch click ──
+const colorsImg = document.getElementById('colors-img');
+const colorName = document.getElementById('color-name');
 document.querySelectorAll('.swatch').forEach(sw=>{
   sw.addEventListener('click',()=>{
     document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
     sw.classList.add('active');
+    const f = sw.dataset.filter || 'none';
+    const n = sw.dataset.colorname || '';
+    colorsImg.classList.add('switching');
+    setTimeout(()=>{
+      colorsImg.style.filter = f === 'none' ? '' : f;
+      colorName.textContent = n;
+      colorsImg.classList.remove('switching');
+    }, 280);
   });
 });
 
