@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxy S26 Ultra</title>
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+:root {
+  --bg:      #02040a;
+  --violet:  #0e0818;
+  --cobalt:  #1e6bff;
+  --cobalt2: #5b9bff;
+  --gold:    #c9943a;
+  --gold2:   #e8b96a;
+  --ice:     #a8d8ff;
+  --white:   #f0f4ff;
+  --gray:    rgba(240,244,255,.45);
+  --border:  rgba(255,255,255,.07);
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── BOKEH ── */
+#bk {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; inset: 0 0 auto;
+  z-index: 300;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  height: 56px;
+  background: rgba(2,4,10,.92);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+}
+.nav-brand {
+  font-size: 13px; font-weight: 400; letter-spacing: .08em;
+  color: var(--white);
+}
+.nav-links { display:flex; align-items:center; gap:32px; list-style:none; }
+.nav-links a {
+  font-size: 12px; font-weight: 300; letter-spacing: .06em;
+  color: var(--gray); text-decoration: none; transition: color .25s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-preorder {
+  font-size: 12px; font-weight: 400; letter-spacing: .06em;
+  background: var(--cobalt); color: #fff;
+  padding: 8px 22px; border-radius: 4px;
+  text-decoration: none; transition: background .25s;
+}
+.nav-preorder:hover { background: #1558d4; }
+
+/* ── SHARED ── */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+.gold-rule {
+  position: relative; z-index: 10;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,148,58,.8) 30%, rgba(201,148,58,1) 50%, rgba(201,148,58,.8) 70%, transparent);
+  box-shadow: 0 0 14px rgba(201,148,58,.25);
+}
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  overflow: hidden;
+}
+/* dark violet gradient bleed on left */
+#hero::before {
+  content:'';
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 70% 90% at 0% 50%, rgba(14,8,24,.95) 0%, rgba(14,8,24,.6) 50%, transparent 80%),
+    radial-gradient(ellipse 50% 60% at 100% 50%, rgba(30,107,255,.05) 0%, transparent 60%);
+  z-index: 1; pointer-events:none;
+}
+.hero-left {
+  position: relative; z-index: 10;
+  padding: 80px 0 80px 48px;
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 300; letter-spacing: .4em;
+  text-transform: uppercase; color: var(--cobalt2);
+  margin-bottom: 20px;
+}
+.hero-title {
+  font-size: clamp(52px, 6vw, 88px);
+  font-weight: 700; line-height: .95;
+  letter-spacing: -.01em;
+  margin-bottom: 28px;
+  color: var(--white);
+}
+.hero-title span { display:block; }
+.hero-desc {
+  font-size: 14px; font-weight: 300; line-height: 1.85;
+  color: var(--gray); max-width: 400px; margin-bottom: 24px;
+}
+.hero-quote {
+  font-size: 13px; font-style: italic; font-weight: 300;
+  color: rgba(240,244,255,.35); margin-bottom: 36px;
+  padding-left: 16px;
+  border-left: 2px solid rgba(201,148,58,.4);
+  max-width: 360px; line-height: 1.7;
+}
+.hero-cta { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+.btn-fill {
+  display:inline-block; padding: 13px 32px;
+  background: var(--cobalt);
+  color: #fff; font-size: 13px; font-weight: 400; letter-spacing: .06em;
+  border-radius: 4px; text-decoration: none;
+  transition: background .25s, transform .2s;
+}
+.btn-fill:hover { background: #1558d4; transform: translateY(-1px); }
+.hero-price {
+  font-size: 12px; font-weight: 300; letter-spacing: .08em;
+  color: rgba(240,244,255,.35);
+}
+.hero-price strong { color: var(--gold2); font-weight: 400; }
+
+/* hero phone */
+.hero-right {
+  position: relative; z-index: 5;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh;
+}
+.hero-phone-wrap {
+  position: relative;
+  width: clamp(280px, 40vw, 520px);
+}
+.hero-phone-img {
+  display: block; width: 100%; height: auto;
+  -webkit-mask-image: radial-gradient(ellipse 72% 68% at 50% 50%,
+    black 20%, rgba(0,0,0,.9) 38%, rgba(0,0,0,.4) 55%, transparent 70%);
+  mask-image: radial-gradient(ellipse 72% 68% at 50% 50%,
+    black 20%, rgba(0,0,0,.9) 38%, rgba(0,0,0,.4) 55%, transparent 70%);
+  filter: drop-shadow(0 30px 70px rgba(14,8,24,.9)) drop-shadow(0 0 50px rgba(30,107,255,.1));
+}
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(-1.5deg); }
+  50%      { transform: translateY(-20px) rotate(1deg); }
+}
+
+/* hotspots */
+.hs {
+  position: absolute;
+  width: 40px; height: 40px; border-radius: 50%;
+  transform: translate(-50%,-50%);
+  cursor: crosshair; z-index: 20;
+}
+.hs:hover::before {
+  content:''; position:absolute; inset:0; border-radius:50%;
+  box-shadow: 0 0 0 2px rgba(30,107,255,.6), 0 0 14px rgba(30,107,255,.4);
+  animation: pulse 1.4s ease-out infinite;
+}
+@keyframes pulse {
+  0%  { box-shadow: 0 0 0 0 rgba(30,107,255,.55), 0 0 14px rgba(30,107,255,.4); }
+  70% { box-shadow: 0 0 0 10px rgba(30,107,255,0), 0 0 14px rgba(30,107,255,.2); }
+  100%{ box-shadow: 0 0 0 0 rgba(30,107,255,0), 0 0 14px rgba(30,107,255,.4); }
+}
+.hs-tip {
+  position:absolute; bottom:calc(100% + 12px); left:50%;
+  transform: translateX(-50%) translateY(4px);
+  opacity:0; pointer-events:none; white-space:nowrap;
+  transition: opacity .2s, transform .2s; z-index:30;
+}
+.hs:hover .hs-tip { opacity:1; transform:translateX(-50%) translateY(0); }
+.hs-box {
+  background: rgba(2,4,10,.95);
+  border: 1px solid rgba(201,148,58,.5);
+  border-top: 2px solid var(--gold);
+  border-radius: 6px; padding: 8px 14px;
+  backdrop-filter: blur(16px);
+}
+.hs-mp { font-size:14px; font-weight:200; color:var(--white); display:block; }
+.hs-lbl { font-size:9px; font-weight:300; letter-spacing:.35em; text-transform:uppercase; color:var(--gold2); }
+
+/* ── FEATURES ── */
+#features {
+  position: relative; z-index: 10;
+  padding: 100px 0;
+  background: linear-gradient(180deg, rgba(14,8,24,.4) 0%, transparent 100%);
+}
+.features-inner {
+  max-width: 1100px; margin:0 auto; padding: 0 48px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: start;
+}
+.features-title {
+  font-size: clamp(34px, 4vw, 56px);
+  font-weight: 700; line-height: 1.1;
+  margin-bottom: 48px; color: var(--white);
+}
+.feat-list { display:flex; flex-direction:column; gap:0; }
+.feat-item {
+  display: grid; grid-template-columns: 48px 1fr;
+  gap: 16px; padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+  opacity:0; transform:translateX(-20px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.feat-item.visible { opacity:1; transform:translateX(0); }
+.feat-item:nth-child(1){transition-delay:0s;}
+.feat-item:nth-child(2){transition-delay:.08s;}
+.feat-item:nth-child(3){transition-delay:.16s;}
+.feat-item:nth-child(4){transition-delay:.24s;}
+.feat-item:nth-child(5){transition-delay:.32s;}
+.feat-num {
+  font-size: 11px; font-weight: 300; letter-spacing: .1em;
+  color: var(--cobalt2); padding-top: 3px;
+}
+.feat-title {
+  font-size: 14px; font-weight: 600; letter-spacing: .04em;
+  margin-bottom: 6px; color: var(--white);
+}
+.feat-desc {
+  font-size: 12px; font-weight: 300; line-height: 1.75;
+  color: var(--gray);
+}
+.features-right {
+  position: sticky; top: 80px;
+  display:flex; justify-content:center;
+}
+.feat-phone-img {
+  display:block; width:100%; max-width:440px; height:auto;
+  -webkit-mask-image: radial-gradient(ellipse 68% 72% at 52% 44%,
+    black 22%, rgba(0,0,0,.85) 40%, rgba(0,0,0,.3) 58%, transparent 72%);
+  mask-image: radial-gradient(ellipse 68% 72% at 52% 44%,
+    black 22%, rgba(0,0,0,.85) 40%, rgba(0,0,0,.3) 58%, transparent 72%);
+  filter: drop-shadow(0 30px 60px rgba(14,8,24,.9));
+}
+
+/* ── COLORS ── */
+#colors {
+  position: relative; z-index: 10;
+  padding: 80px 0;
+}
+.colors-inner {
+  max-width: 1100px; margin:0 auto; padding: 0 48px;
+  display: grid; grid-template-columns: 280px 1fr;
+  gap: 60px; align-items: center;
+}
+.colors-label {
+  font-size: 11px; font-weight: 300; letter-spacing: .4em;
+  text-transform: uppercase; color: var(--cobalt2); margin-bottom: 20px;
+}
+.color-swatches { display:flex; gap:14px; align-items:center; }
+.swatch {
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  cursor:pointer;
+}
+.swatch-dot {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid transparent;
+  transition: border-color .25s, transform .2s;
+}
+.swatch:hover .swatch-dot { transform: scale(1.1); }
+.swatch.active .swatch-dot { border-color: rgba(255,255,255,.5); }
+.swatch-name {
+  font-size: 9px; font-weight: 300; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gray);
+}
+.colors-right {
+  position: relative;
+}
+.colors-showcase-img {
+  display:block; width:100%; height:320px;
+  object-fit: cover; object-position: center 30%;
+  -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, black 25%, rgba(0,0,0,.7) 45%, rgba(0,0,0,.15) 62%, transparent 75%);
+  mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, black 25%, rgba(0,0,0,.7) 45%, rgba(0,0,0,.15) 62%, transparent 75%);
+}
+
+/* ── S PEN ── */
+#spen {
+  position: relative; z-index: 10;
+  padding: 80px 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(14,8,24,.3) 50%, transparent 100%);
+}
+.spen-inner {
+  max-width: 1100px; margin:0 auto; padding: 0 48px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.spen-img-wrap { display:flex; justify-content:center; }
+.spen-img {
+  display:block; width:100%; max-width:360px; height:auto;
+  -webkit-mask-image: radial-gradient(ellipse 65% 65% at 55% 38%,
+    black 20%, rgba(0,0,0,.85) 38%, rgba(0,0,0,.3) 56%, transparent 70%);
+  mask-image: radial-gradient(ellipse 65% 65% at 55% 38%,
+    black 20%, rgba(0,0,0,.85) 38%, rgba(0,0,0,.3) 56%, transparent 70%);
+  filter: drop-shadow(0 20px 50px rgba(14,8,24,.8));
+}
+.spen-eyebrow {
+  font-size: 10px; font-weight: 300; letter-spacing: .5em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+}
+.spen-title {
+  font-size: clamp(26px, 3vw, 40px); font-weight: 700;
+  line-height: 1.2; margin-bottom: 20px; color: var(--white);
+}
+.spen-desc {
+  font-size: 14px; font-weight: 300; line-height: 1.85;
+  color: var(--gray); margin-bottom: 28px; max-width: 420px;
+}
+.spen-specs { display:flex; gap:24px; flex-wrap:wrap; }
+.spen-spec {
+  font-size: 11px; font-weight: 300; letter-spacing: .15em;
+  color: var(--cobalt2);
+  padding: 6px 14px; border: 1px solid rgba(30,107,255,.25);
+  border-radius: 50px;
+}
+
+/* ── MEDIA / STORIES ── */
+#media {
+  position: relative; z-index: 10;
+  padding: 80px 0 100px;
+}
+.media-inner { max-width:1100px; margin:0 auto; padding:0 48px; }
+.media-title {
+  font-size: clamp(26px, 3vw, 40px); font-weight: 700;
+  margin-bottom: 12px; color: var(--white);
+}
+.media-sub {
+  font-size: 13px; font-weight: 300; color: var(--gray);
+  margin-bottom: 40px;
+}
+.media-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.media-card {
+  position: relative; border-radius: 10px; overflow:hidden;
+  background: rgba(14,8,24,.8);
+  cursor: pointer;
+  transition: transform .3s;
+}
+.media-card:hover { transform: translateY(-4px); }
+.media-thumb {
+  width:100%; height:180px; object-fit:cover; object-position:center 30%;
+  display:block; opacity:.7;
+  transition: opacity .3s;
+}
+.media-card:hover .media-thumb { opacity:.9; }
+.media-overlay {
+  position:absolute; inset:0;
+  background: linear-gradient(to top, rgba(2,4,10,.9) 0%, transparent 50%);
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding: 16px;
+}
+.media-play {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-60%);
+  width:44px; height:44px; border-radius:50%;
+  background: rgba(30,107,255,.85);
+  display:flex; align-items:center; justify-content:center;
+  transition: background .25s, transform .25s;
+}
+.media-card:hover .media-play { background: var(--cobalt); transform:translate(-50%,-60%) scale(1.1); }
+.media-play::after {
+  content:''; border-style:solid;
+  border-width: 8px 0 8px 14px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 3px;
+}
+.media-chip {
+  display:inline-block;
+  font-size: 8px; font-weight: 400; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--cobalt2);
+  background: rgba(30,107,255,.15); border: 1px solid rgba(30,107,255,.2);
+  padding: 3px 10px; border-radius: 50px; margin-bottom: 6px;
+}
+.media-label {
+  font-size: 12px; font-weight: 500; letter-spacing: .04em;
+  color: var(--white); line-height: 1.4;
+}
+
+/* ── FINAL CTA ── */
+#cta {
+  position: relative; z-index: 10;
+  padding: 100px 48px; text-align:center;
+  background: linear-gradient(180deg, transparent 0%, rgba(14,8,24,.5) 50%, transparent 100%);
+}
+.cta-title {
+  font-size: clamp(36px, 4.5vw, 64px); font-weight: 700;
+  letter-spacing: -.01em; margin-bottom: 16px; color: var(--white);
+}
+.cta-sub {
+  font-size: 15px; font-weight: 300; color: var(--gray);
+  margin-bottom: 40px; letter-spacing: .05em;
+}
+.cta-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.btn-outline {
+  display:inline-block; padding: 13px 36px;
+  border: 1px solid rgba(255,255,255,.2); border-radius: 4px;
+  color: var(--gray); font-size: 13px; font-weight: 300; letter-spacing: .06em;
+  text-decoration: none; transition: all .25s;
+}
+.btn-outline:hover { border-color: rgba(255,255,255,.5); color: var(--white); }
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 10;
+  padding: 28px 48px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-top: 1px solid var(--border);
+}
+.footer-brand { font-size:12px; font-weight:400; letter-spacing:.06em; color:rgba(240,244,255,.3); }
+.footer-note { font-size:11px; font-weight:300; color:rgba(240,244,255,.2); }
+
+/* ── REVEAL ── */
+.reveal {
+  opacity:0; clip-path:inset(8% 0 8% 0);
+  transition: opacity .75s ease, clip-path .75s ease;
+}
+.reveal.on { opacity:1; clip-path:inset(0% 0 0% 0); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  #hero { grid-template-columns:1fr; padding-top:80px; }
+  .hero-left { padding: 60px 24px 40px; }
+  .hero-right { min-height:60vw; }
+  .features-inner,
+  .spen-inner { grid-template-columns:1fr; }
+  .features-right { position:static; }
+  .colors-inner { grid-template-columns:1fr; }
+  .media-grid { grid-template-columns:1fr; }
+  .wrap, .features-inner, .colors-inner,
+  .spen-inner, .media-inner { padding:0 24px; }
+  #cta { padding: 80px 24px; }
+  footer { padding: 24px; flex-direction:column; gap:8px; text-align:center; }
+  .nav-links { display:none; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bk"></canvas>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-brand">Galaxy S26 Ultra</div>
+  <ul class="nav-links">
+    <li><a href="#features">Developers</a></li>
+    <li><a href="#spen">Contact Us</a></li>
+  </ul>
+  <a href="#cta" class="nav-preorder">Pre-Order</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Galaxy S26 Ultra — 2025</p>
+    <h1 class="hero-title">
+      <span>GALAXY</span>
+      <span>S26 ULTRA</span>
+    </h1>
+    <p class="hero-desc">
+      Meet Galaxy S26 Ultra, with the power of Note.
+      Slim and bold, a titanium frame surrounds the ultra-smooth glass,
+      accented by water-resistant design that seems to defy physics.
+    </p>
+    <p class="hero-quote">
+      "The most impressive camera array I've ever seen on a smartphone."
+    </p>
+    <div class="hero-cta">
+      <a href="#cta" class="btn-fill">Pre-Order Now</a>
+      <span class="hero-price">Starting <strong>$1,299</strong> · Ships Mar 2025</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-phone-wrap">
+      <img
+        class="hero-phone-img"
+        src="./phone-lineup.jpeg"
+        alt="Galaxy S26 Ultra — full lineup"
+        draggable="false"
+      >
+      <!-- lens hotspots -->
+      <div class="hs" style="top:27%;left:26%">
+        <div class="hs-tip"><div class="hs-box">
+          <span class="hs-mp">200MP</span>
+          <span class="hs-lbl">Main · f/1.7 · OIS</span>
+        </div></div>
+      </div>
+      <div class="hs" style="top:22%;left:46%">
+        <div class="hs-tip"><div class="hs-box">
+          <span class="hs-mp">50MP</span>
+          <span class="hs-lbl">Telephoto · 3× Optical</span>
+        </div></div>
+      </div>
+      <div class="hs" style="top:43%;left:26%">
+        <div class="hs-tip"><div class="hs-box">
+          <span class="hs-mp">12MP</span>
+          <span class="hs-lbl">Ultrawide · 120° FOV</span>
+        </div></div>
+      </div>
+      <div class="hs" style="top:40%;left:41%">
+        <div class="hs-tip"><div class="hs-box">
+          <span class="hs-mp">10MP</span>
+          <span class="hs-lbl">Periscope · 10× Zoom</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- ── FEATURES ── -->
+<section id="features" class="reveal">
+  <div class="features-inner">
+    <div class="features-left">
+      <h2 class="features-title">Features for<br>the Future</h2>
+      <div class="feat-list">
+        <div class="feat-item">
+          <span class="feat-num">01</span>
+          <div>
+            <p class="feat-title">Big Pixel Sensor</p>
+            <p class="feat-desc">The 200MP high-resolution sensor captures every microscopic detail — from water droplets on glass to distant mountain ridgelines — in a single frame.</p>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-num">02</span>
+          <div>
+            <p class="feat-title">Super Clear Glass &amp; Lens</p>
+            <p class="feat-desc">Corning Gorilla Glass Armor covers the front and rear. Each camera lens features an exclusive anti-reflection nano-coating that eliminates ghost flares.</p>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-num">03</span>
+          <div>
+            <p class="feat-title">Grade-4 Titanium Frame</p>
+            <p class="feat-desc">Machined from aerospace-grade titanium — stronger than steel, lighter than aluminum. The warm gold edge is not paint. It is the metal itself.</p>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-num">04</span>
+          <div>
+            <p class="feat-title">IP68 Water Resistance</p>
+            <p class="feat-desc">Built to stand up to drips, drops, and full submersion to 1.5m for 30 minutes. The water droplets in our campaign photo are real — and so is the protection.</p>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-num">05</span>
+          <div>
+            <p class="feat-title">Snapdragon 8 Elite</p>
+            <p class="feat-desc">The world's fastest mobile chip renders 8K ProRes video and real-time AI processing simultaneously — without thermal throttle, without compromise.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="features-right">
+      <img
+        class="feat-phone-img"
+        src="./phone-dual.jpeg"
+        alt="Galaxy S26 Ultra front and rear"
+        draggable="false"
+      >
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- ── COLOR SWATCHES ── -->
+<section id="colors" class="reveal">
+  <div class="colors-inner">
+    <div class="colors-left">
+      <p class="colors-label">Choose Your Finish</p>
+      <div class="color-swatches">
+        <div class="swatch active">
+          <div class="swatch-dot" style="background:radial-gradient(circle at 35% 35%,#2a1a4a,#0a0614);"></div>
+          <span class="swatch-name">Violet</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:radial-gradient(circle at 35% 35%,#1a1a2a,#06060e);"></div>
+          <span class="swatch-name">Black</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:radial-gradient(circle at 35% 35%,#d4a84b,#8a6520);"></div>
+          <span class="swatch-name">Gold</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-dot" style="background:radial-gradient(circle at 35% 35%,#c8d8e8,#7a8a98);"></div>
+          <span class="swatch-name">Silver</span>
+        </div>
+      </div>
+    </div>
+    <div class="colors-right">
+      <img
+        class="colors-showcase-img"
+        src="./1772714635529-087o9heccdz7.jpeg"
+        alt="Galaxy S26 Ultra Violet"
+      >
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- ── S PEN ── -->
+<section id="spen" class="reveal">
+  <div class="spen-inner">
+    <div class="spen-img-wrap">
+      <img
+        class="spen-img"
+        src="./phone-lifestyle.jpeg"
+        alt="Galaxy S26 Ultra with S Pen"
+        draggable="false"
+      >
+    </div>
+    <div>
+      <p class="spen-eyebrow">S Pen</p>
+      <h2 class="spen-title">The only Galaxy S<br>with a built-in S Pen.</h2>
+      <p class="spen-desc">
+        S Pen fits right into S26 Ultra. Eject it, sketch with it, control your phone with it.
+        Improved latency in Samsung Notes makes every stroke feel as natural as ink on paper —
+        and the AI-powered handwriting conversion turns your shorthand into clean text instantly.
+      </p>
+      <div class="spen-specs">
+        <span class="spen-spec">2.8ms Latency</span>
+        <span class="spen-spec">IP68 Rated</span>
+        <span class="spen-spec">AI Translate</span>
+        <span class="spen-spec">4,096 Pressure Levels</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- ── MEDIA / STORIES ── -->
+<section id="media" class="reveal">
+  <div class="media-inner">
+    <h2 class="media-title">Galaxy S26 Ultra Stories</h2>
+    <p class="media-sub">See what the world captures through 200 megapixels.</p>
+    <div class="media-grid">
+      <div class="media-card">
+        <img class="media-thumb" src="./1772714635529-087o9heccdz7.jpeg" alt="Astrophotography" style="object-position:center 25%;">
+        <div class="media-overlay">
+          <div class="media-play"></div>
+          <span class="media-chip">Galaxy S26 Ultra</span>
+          <span class="media-label">Astrophotography<br>Untold Stories</span>
+        </div>
+      </div>
+      <div class="media-card">
+        <img class="media-thumb" src="./phone-lineup.jpeg" alt="Official Film" style="object-position:center 40%;">
+        <div class="media-overlay">
+          <div class="media-play"></div>
+          <span class="media-chip">Official Film</span>
+          <span class="media-label">Galaxy S26 Ultra —<br>The Future</span>
+        </div>
+      </div>
+      <div class="media-card">
+        <img class="media-thumb" src="./phone-lifestyle.jpeg" alt="S Pen" style="object-position:center 20%;">
+        <div class="media-overlay">
+          <div class="media-play"></div>
+          <span class="media-chip">Galaxy S26 Ultra</span>
+          <span class="media-label">S Pen · Write<br>the Future</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-rule"></div>
+
+<!-- ── FINAL CTA ── -->
+<section id="cta" class="reveal">
+  <h2 class="cta-title">Own the Future.</h2>
+  <p class="cta-sub">Galaxy S26 Ultra. Starting from $1,299. Available now.</p>
+  <div class="cta-btns">
+    <a href="#" class="btn-fill">Pre-Order Now</a>
+    <a href="#features" class="btn-outline">Explore Features</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-brand">Galaxy S26 Ultra</div>
+  <div class="footer-note">© 2025 Samsung Electronics Co., Ltd. All rights reserved.</div>
+</footer>
+
+<script>
+// ── bokeh canvas ──
+const bk = document.getElementById('bk');
+const bx = bk.getContext('2d');
+function resizeBk(){ bk.width=innerWidth; bk.height=innerHeight; }
+resizeBk(); addEventListener('resize', resizeBk, {passive:true});
+const COLS=[[168,216,255],[30,107,255],[201,148,58],[168,168,255]];
+const pts=Array.from({length:50},()=>{
+  const c=COLS[Math.random()<.1?2:Math.floor(Math.random()*2)];
+  return{x:Math.random(),y:Math.random(),r:Math.random()*6+2,
+    op:Math.random()*.18+.03,spd:Math.random()*.00016+.00005,
+    dx:(Math.random()-.5)*.00009,c};
+});
+function drawBk(){
+  bx.clearRect(0,0,bk.width,bk.height);
+  const W=bk.width,H=bk.height;
+  for(const p of pts){
+    const px=p.x*W,py=p.y*H;
+    const g=bx.createRadialGradient(px,py,0,px,py,p.r*5);
+    const[r,g2,b]=p.c;
+    g.addColorStop(0,`rgba(${r},${g2},${b},${p.op})`);
+    g.addColorStop(1,`rgba(${r},${g2},${b},0)`);
+    bx.beginPath(); bx.arc(px,py,p.r*5,0,Math.PI*2);
+    bx.fillStyle=g; bx.fill();
+    p.y-=p.spd; p.x+=p.dx;
+    if(p.y<-.04){p.y=1.04;p.x=Math.random();}
+    if(p.x<-.04||p.x>1.04)p.dx*=-1;
+  }
+  requestAnimationFrame(drawBk);
+}
+drawBk();
+
+// ── counters ──
+document.querySelectorAll('.counter').forEach(el=>{
+  new IntersectionObserver(([e])=>{
+    if(!e.isIntersecting||el._done)return; el._done=1;
+    const t=+el.dataset.target; let c=0;
+    const s=t/(1800/16);
+    const i=setInterval(()=>{c=Math.min(c+s,t);el.textContent=Math.floor(c);if(c>=t)clearInterval(i);},16);
+  },{threshold:.5}).observe(el);
+});
+
+// ── reveal ──
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// ── feature stagger ──
+const fo=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.15});
+document.querySelectorAll('.feat-item').forEach(el=>fo.observe(el));
+
+// ── swatch click ──
+document.querySelectorAll('.swatch').forEach(sw=>{
+  sw.addEventListener('click',()=>{
+    document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('active'));
+    sw.classList.add('active');
+  });
+});
+
+// ── parallax ──
+addEventListener('scroll',()=>{
+  const sy=scrollY;
+  const img=document.querySelector('.hero-phone-img');
+  if(img) img.style.transform=`translateY(${sy*.05}px)`;
+},{passive:true});
+</script>
+</body>
+</html>
