@@ -144,11 +144,19 @@ nav {
 .hero-phone-wrap {
   position: relative;
   width: clamp(280px, 40vw, 520px);
-  filter: drop-shadow(0 30px 70px rgba(14,8,24,.9)) drop-shadow(0 0 50px rgba(30,107,255,.1));
+}
+.hero-phone-wrap::after {
+  content: '';
+  position: absolute; inset: -1px;
+  background:
+    linear-gradient(to right,   #02040a 0%, transparent 38%),
+    linear-gradient(to left,    #02040a 0%, transparent 38%),
+    linear-gradient(to bottom,  #02040a 0%, transparent 22%),
+    linear-gradient(to top,     #02040a 0%, transparent 28%);
+  pointer-events: none; z-index: 10;
 }
 .hero-phone-img {
   display: block; width: 100%; height: auto;
-  mix-blend-mode: screen;
 }
 @keyframes float {
   0%,100% { transform: translateY(0) rotate(-1.5deg); }
@@ -234,11 +242,19 @@ nav {
 .features-right {
   position: sticky; top: 80px;
   display:flex; justify-content:center;
-  filter: drop-shadow(0 30px 60px rgba(14,8,24,.9));
+}
+.features-right::after {
+  content: '';
+  position: absolute; inset: -1px;
+  background:
+    linear-gradient(to right,   #02040a 0%, transparent 38%),
+    linear-gradient(to left,    #02040a 0%, transparent 38%),
+    linear-gradient(to bottom,  #02040a 0%, transparent 22%),
+    linear-gradient(to top,     #02040a 0%, transparent 28%);
+  pointer-events: none; z-index: 10;
 }
 .feat-phone-img {
   display:block; width:100%; max-width:440px; height:auto;
-  mix-blend-mode: screen;
 }
 
 /* ── COLORS ── */
@@ -275,10 +291,19 @@ nav {
 .colors-right {
   position: relative;
 }
+.colors-right::after {
+  content: '';
+  position: absolute; inset: -1px;
+  background:
+    linear-gradient(to right,   #02040a 0%, transparent 38%),
+    linear-gradient(to left,    #02040a 0%, transparent 38%),
+    linear-gradient(to bottom,  #02040a 0%, transparent 22%),
+    linear-gradient(to top,     #02040a 0%, transparent 28%);
+  pointer-events: none; z-index: 10;
+}
 .colors-showcase-img {
   display:block; width:100%; height:360px;
   object-fit: contain; object-position: center center;
-  mix-blend-mode: screen;
   transition: filter .5s ease, opacity .3s ease;
 }
 .colors-showcase-img.switching { opacity: 0; }
@@ -287,17 +312,16 @@ nav {
 #spen {
   position: relative; z-index: 10;
   padding: 80px 0;
-  background: linear-gradient(180deg, transparent 0%, rgba(14,8,24,.3) 50%, transparent 100%);
+  background: transparent;
 }
 .spen-inner {
   max-width: 1100px; margin:0 auto; padding: 0 48px;
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 80px; align-items: center;
 }
-.spen-img-wrap { display:flex; justify-content:center; filter: drop-shadow(0 20px 50px rgba(14,8,24,.8)); }
+.spen-img-wrap { position: relative; display:flex; justify-content:center; }
 .spen-img {
   display:block; width:100%; max-width:360px; height:auto;
-  mix-blend-mode: screen;
 }
 .spen-eyebrow {
   font-size: 10px; font-weight: 300; letter-spacing: .5em;
@@ -771,6 +795,85 @@ addEventListener('scroll',()=>{
   const img=document.querySelector('.hero-phone-img');
   if(img) img.style.transform=`translateY(${sy*.05}px)`;
 },{passive:true});
+
+// ── spen: magic brush BFS flood-fill (Photoshop magic wand style) ──
+function magicBrush(img) {
+  if (img.dataset.done) return;
+  img.dataset.done = '1';
+
+  const c = document.createElement('canvas');
+  c.width = img.naturalWidth;
+  c.height = img.naturalHeight;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+
+  const id = ctx.getImageData(0, 0, c.width, c.height);
+  const d = id.data;
+  const W = c.width, H = c.height;
+
+  // sample bg color from all 4 corners (20×20 each)
+  let bgR=0,bgG=0,bgB=0,n=0;
+  const sz=20;
+  for(let y=0;y<sz;y++) for(let x=0;x<sz;x++){
+    let i=(y*W+x)*4;              bgR+=d[i];bgG+=d[i+1];bgB+=d[i+2];n++;
+    i=(y*W+(W-1-x))*4;            bgR+=d[i];bgG+=d[i+1];bgB+=d[i+2];n++;
+    i=((H-1-y)*W+x)*4;            bgR+=d[i];bgG+=d[i+1];bgB+=d[i+2];n++;
+    i=((H-1-y)*W+(W-1-x))*4;     bgR+=d[i];bgG+=d[i+1];bgB+=d[i+2];n++;
+  }
+  bgR/=n; bgG/=n; bgB/=n;
+
+  const thr = 50;
+  function colorDist(pi){ return Math.sqrt((d[pi]-bgR)**2+(d[pi+1]-bgG)**2+(d[pi+2]-bgB)**2); }
+
+  // BFS flood fill seeded from all 4 edges — only removes connected background
+  const visited = new Uint8Array(W*H);
+  const isBg    = new Uint8Array(W*H);
+  const queue   = new Int32Array(W*H);
+  let head=0, tail=0;
+
+  function seed(idx){ if(!visited[idx]){ visited[idx]=1; queue[tail++]=idx; } }
+  for(let x=0;x<W;x++){ seed(x); seed((H-1)*W+x); }
+  for(let y=1;y<H-1;y++){ seed(y*W); seed(y*W+W-1); }
+
+  while(head<tail){
+    const idx=queue[head++];
+    if(colorDist(idx*4)<thr){
+      isBg[idx]=1;
+      const x=idx%W, y=idx/W|0;
+      if(x>0   &&!visited[idx-1]){ visited[idx-1]=1; queue[tail++]=idx-1; }
+      if(x<W-1 &&!visited[idx+1]){ visited[idx+1]=1; queue[tail++]=idx+1; }
+      if(y>0   &&!visited[idx-W]){ visited[idx-W]=1; queue[tail++]=idx-W; }
+      if(y<H-1 &&!visited[idx+W]){ visited[idx+W]=1; queue[tail++]=idx+W; }
+    }
+  }
+
+  // apply alpha: bg=0, feather soft edge on boundary pixels
+  const feather=3;
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    const idx=y*W+x;
+    if(isBg[idx]){ d[idx*4+3]=0; continue; }
+    let bgCount=0, total=0;
+    for(let dy=-feather;dy<=feather;dy++) for(let dx=-feather;dx<=feather;dx++){
+      const ny=y+dy, nx=x+dx;
+      if(ny<0||ny>=H||nx<0||nx>=W) continue;
+      total++;
+      if(isBg[ny*W+nx]) bgCount++;
+    }
+    if(bgCount>0) d[idx*4+3]=Math.round(d[idx*4+3]*(1-bgCount/total*0.95));
+  }
+
+  ctx.putImageData(id, 0, 0);
+
+  c.className = img.className;
+  c.style.cssText = 'display:block;width:100%;max-width:360px;height:auto;';
+  img.parentNode.replaceChild(c, img);
+}
+
+const spenImg = document.querySelector('.spen-img');
+if(spenImg){
+  if(spenImg.complete && spenImg.naturalWidth) magicBrush(spenImg);
+  else spenImg.addEventListener('load', ()=>magicBrush(spenImg));
+}
 </script>
 </body>
 </html>
